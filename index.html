@@ -6,7 +6,7 @@
 <title>Ontos Labs</title>
 <meta name="description" content="Agentic being in the world.">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0e0f12">
+<meta name="theme-color" content="#0b0d12">
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -30,44 +30,16 @@
 </head>
 <body>
 <div class="bg" aria-hidden="true">
-  <video class="bg-video" id="bg-video" autoplay muted loop playsinline preload="metadata" poster="media/bg-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback>
-    <source src="media/bg.mp4" type="video/mp4">
-  </video>
+  <!-- The Ontos mark (outer ring rx26 ry17.5, middle ring rx16.5 ry11), drawn huge and faint.
+       Sized and centred on the text block in styles.css; strokes stay ~1.25px at any size. -->
+  <svg class="orbit" viewBox="-26 -17.5 52 35" focusable="false">
+    <ellipse class="ring ring-outer" rx="26" ry="17.5"/>
+    <ellipse class="ring ring-mid" rx="16.5" ry="11"/>
+  </svg>
 </div>
-<script>
-/* Runs before playback can start. Small screens get the lighter video and poster
-   (the desktop file stays listed as a fallback source); reduced motion, or an earlier
-   "pause" from the visitor, means no autoplay, so the poster is shown instead. */
-(function () {
-  var v = document.getElementById('bg-video'), d = document.documentElement;
-  if (!v || !window.matchMedia) return;
-  var mq = function (q) { return window.matchMedia(q).matches; };
-  var stored = null;
-  try { stored = window.localStorage.getItem('ontos-bg-paused'); } catch (e) {}
-  var conn = navigator.connection || {};
-  var small = mq('(max-width: 768px), (max-height: 540px) and (hover: none)') || conn.saveData === true;
-  var still = mq('(prefers-reduced-motion: reduce)') || stored === '1';
-  var desktop = v.querySelector('source');
-  if (desktop) desktop.addEventListener('error', function () { d.className += ' no-video'; });
-  v.addEventListener('error', function () { d.className += ' no-video'; });
-  if (small) {
-    var s = document.createElement('source');
-    s.src = 'media/bg-mobile.mp4';
-    s.type = 'video/mp4';
-    v.insertBefore(s, desktop);
-    v.setAttribute('poster', 'media/bg-poster-small.jpg');
-  }
-  if (still) {
-    v.removeAttribute('autoplay');
-    v.autoplay = false;
-    v.preload = 'none';
-    d.className += ' bg-still';
-  }
-  if (small || still) v.load();
-})();
-</script>
 
 <main class="stage" id="main">
+  <div class="core">
   <h1 class="logo">
     <span class="sr-only">Ontos Labs</span>
     <svg class="logo-svg" viewBox="0 3 196 45" width="196" height="45" aria-hidden="true" focusable="false">
@@ -82,16 +54,11 @@
   </h1>
   <p class="motto">Agentic <em>being</em> in the world.</p>
   <p class="contact"><a href="mailto:contact@ontoslabs.ai">contact@ontoslabs.ai</a></p>
+  </div>
 </main>
 
 <footer class="foot">
   <p class="copy"><small>&copy; 2026 Ontos Labs</small></p>
-  <button class="bg-toggle" id="bg-toggle" type="button" hidden>
-    <svg class="i-pause" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><rect x="3.5" y="2.5" width="3" height="11" rx="0.75"/><rect x="9.5" y="2.5" width="3" height="11" rx="0.75"/></svg>
-    <svg class="i-play" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4.5 2.6v10.8c0 .6.65.95 1.15.62l8.1-5.4a.75.75 0 0 0 0-1.24l-8.1-5.4c-.5-.33-1.15.02-1.15.62z"/></svg>
-    <span class="sr-only" id="bg-toggle-label">Pause background video</span>
-  </button>
 </footer>
-<script src="script.js" defer></script>
 </body>
 </html>

@@ -1,36 +1,30 @@
 # Ontos Labs: stealth site
 
-A one-page static site: logo, motto, contact address, and a looping, heavily blurred
-background video. There is no build step; the folder is deployable as is.
+A one-page static site: logo, motto and contact address on a dark background drawn from
+the Ontos orbit (the rings of the logo mark, scaled up). There is no build step and no
+JavaScript; the folder is deployable as is.
 
 ## What's here
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | The page: inline SVG logo, motto, `mailto:` link, background `<video>`, social meta tags |
-| `styles.css` | Layout for phones, tablets and desktops, scrim, focus styles, print and forced colours |
-| `script.js` | Pause/play button for the background video (remembered per visitor) |
-| `media/bg.mp4` | Desktop background, 1280x720 H.264, 28 s loop, about 1.7 MB |
-| `media/bg-mobile.mp4` | Phone background, 640x360, about 0.55 MB (picked automatically on small screens) |
-| `media/bg-poster*.jpg` | Still frames shown before the video plays, or instead of it when reduced motion is on |
-| `media/og.jpg` | 1200x630 preview image for link sharing |
+| `index.html` | The page: inline SVG logo, motto, `mailto:` link, inline SVG orbit background, social meta tags |
+| `styles.css` | Layout for phones, tablets and desktops, orbit sizing, text halo, focus styles, print and forced colours |
+| `media/og.jpg` | 1200x630 preview image for link sharing (a render of the page) |
 | `favicon.*`, `apple-touch-icon.png` | Icons |
-| `tools/make-bg.swift` | Rebuilds the background media from a source video (macOS, no dependencies) |
 | `.nojekyll` | Tells GitHub Pages to serve the files exactly as they are |
 
-The page makes no external requests: no fonts, analytics or CDNs. The video is muted and
-does not autoplay when the visitor has reduced motion turned on, and the pause button
-(bottom right) stops it at any time.
+The page makes no external requests: no fonts, analytics or CDNs. Nothing on it moves.
 
 ## Publish in 2 minutes (GitHub web UI)
 
 1. Go to <https://github.com/new>, choose a repository name (for example `ontoslabs-site`), and
    make it **Public**. On a free plan, Pages only works for public repos. Click **Create repository**.
 2. On the new repo page, click **uploading an existing file**. Drag in the **contents** of this
-   folder (`index.html`, `styles.css`, `script.js`, the icons, `.nojekyll`, and the `media/` folder),
+   folder (`index.html`, `styles.css`, the icons, `.nojekyll`, and the `media/` folder),
    not the folder itself. `index.html` must be at the top level of the repo. Click **Commit changes**.
    The browser may hide `.nojekyll` because it starts with a dot. The site works without it.
-   `tools/` and `README.md` are optional. Anything you upload to a public repo is public.
+   `README.md` is optional. Anything you upload to a public repo is public.
 3. Open **Settings → Pages**. Under **Build and deployment**, set **Source** to **Deploy from a
    branch**, choose **Branch: `main`** and folder **`/ (root)`**, then click **Save**.
 4. After about a minute the site is live at:
@@ -66,34 +60,28 @@ After publishing, make the social preview URLs absolute: in `index.html`, change
 Email: the `mailto:contact@ontoslabs.ai` link only works if mail for that address is set up
 with your mail provider. GitHub Pages does not handle email.
 
-## Replacing the background video
+## The orbit background
 
-Use `tools/make-bg.swift`. It needs macOS with the Xcode command-line tools, uses AVFoundation
-and Core Image, and installs nothing.
+The background is the logo mark's outer ring (rx 26, ry 17.5) and middle ring (rx 16.5,
+ry 11), drawn as one inline SVG in `index.html` with `viewBox="-26 -17.5 52 35"`. The
+mark's filled inner ellipse becomes a faint blue glow behind the text.
 
-```sh
-swiftc -O -swift-version 5 tools/make-bg.swift -o /tmp/make-bg
-/tmp/make-bg contact source.mp4 /tmp/sheet.jpg 15     # one frame every 15 s, to find a calm shot with no cuts
-/tmp/make-bg preview source.mp4 /tmp/look.jpg 240 250 # preview the blurred look at those times (s)
-/tmp/make-bg render  source.mp4 media 235.6 28 --speed=0.72 --sigma=0.09 --ev=-1.1 --sat=0.8 --contrast=0.92 --hi-kbps=900 --lo-kbps=320
-```
+- **Position:** centred on the text block (`.orbit` in `styles.css`, using the same safe-area
+  padding as the body and the 2.75rem footer height).
+- **Size:** `--r` is the middle ring's horizontal radius. In landscape (wider than 11:10) it is
+  `max(7 x motto size, 0.656 x stage height)`: the middle ring fills about 7/8 of the stage
+  height and always clears the motto, and the outer ring runs off the top and bottom and cuts
+  the corners. In portrait the rings run off the sides; `--r` keeps the outer ring's lower arc
+  above the footer (a 1.5rem gap, shrinking towards 0.25rem on short phones such as 320x568 so the
+  middle ring still clears the logo by about 18px).
+- **Strokes:** 1.25px at any size (`vector-effect: non-scaling-stroke`), in `--ring`
+  (`#aebff0` at 17%) and `--ring-outer` (13%).
+- **Clean text:** no ring passes behind the logo, motto, email or footer at any screen shape that
+  was checked: 320x568, 360x640, 375x667, 390x844, 430x932, 844x390, 768x1024, 1024x1366,
+  1280x800, 1440x900, 1920x1080 and 2560x1440 (closest approach: 18px, logo at 320x568).
+  `.core::before` is also a soft plate of the page colour drawn above the rings, so no line
+  can show through the words even on unusual screen shapes. Contrast on the plate: text
+  16:1, "being" 9.7:1, footer 10.7:1.
 
-`render <src> <mediaDir> <start-seconds> <duration-seconds>` rewrites `media/bg.mp4`,
-`media/bg-mobile.mp4`, `media/bg-poster.jpg` and `media/bg-poster-small.jpg`. It crossfades the
-end into the start so the loop has no seam. Other flags:
-
-- `--sigma`: blur strength, as a fraction of frame height.
-- `--ev`, `--sat`, `--contrast`: exposure, saturation and contrast.
-- `--speed`: playback speed. Values below 1 are slower and calmer.
-- `--xfade`: length of the loop crossfade, in seconds.
-
-Keep the two videos under about 5 MB (desktop) and 2 MB (mobile).
-
-Text contrast depends on how bright the video is. The scrim in `styles.css` (`.bg::after`) was
-checked against every poster pixel and every video frame, sampled every 0.5 s:
-
-- email: at least 7.7:1
-- "being": at least 4.5:1
-- footer: at least 6.0:1
-
-If the new video is brighter, add `--ev=-1.5` or raise the scrim's `0.50` alpha.
+To change how the orbit looks, edit `--ring`, `--ring-outer` and `--night`. After any
+visual change, re-render `media/og.jpg` at 1200x630.
