@@ -19,8 +19,8 @@
   --foot-h: 2.75rem;
   --stage-h: calc(100vh - var(--pt) - var(--pb) - var(--foot-h));
   --motto-size: clamp(2rem, min(1.2rem + 3.6vw, 7.5vh + 0.5rem), 5rem);
-  --ring: rgba(174, 191, 240, 0.17);
-  --ring-outer: rgba(174, 191, 240, 0.13);
+  --ring: rgba(174, 191, 240, 0.45);
+  --ring-outer: rgba(174, 191, 240, 0.30);
 }
 @supports (height: 100dvh) {
   :root { --stage-h: calc(100dvh - var(--pt) - var(--pb) - var(--foot-h)); }
@@ -103,7 +103,7 @@ body {
 .ring {
   fill: none;
   stroke: var(--ring);
-  stroke-width: 1.25;
+  stroke-width: 2;
   vector-effect: non-scaling-stroke;
 }
 .ring-outer { stroke: var(--ring-outer); }
