@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ontos Labs</title>
+<meta name="description" content="Agentic being in the world.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0e0f12">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+<!-- Social previews. Most scrapers want an absolute og:image URL: once the site URL is final, prefix media/og.jpg with it. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ontos Labs">
+<meta property="og:title" content="Ontos Labs">
+<meta property="og:description" content="Agentic being in the world.">
+<meta property="og:image" content="media/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ontos Labs. Agentic being in the world.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ontos Labs">
+<meta name="twitter:description" content="Agentic being in the world.">
+<meta name="twitter:image" content="media/og.jpg">
+<meta name="twitter:image:alt" content="Ontos Labs. Agentic being in the world.">
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <video class="bg-video" id="bg-video" autoplay muted loop playsinline preload="metadata" poster="media/bg-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback>
+    <source src="media/bg.mp4" type="video/mp4">
+  </video>
+</div>
+<script>
+/* Runs before playback can start. Small screens get the lighter video and poster
+   (the desktop file stays listed as a fallback source); reduced motion, or an earlier
+   "pause" from the visitor, means no autoplay, so the poster is shown instead. */
+(function () {
+  var v = document.getElementById('bg-video'), d = document.documentElement;
+  if (!v || !window.matchMedia) return;
+  var mq = function (q) { return window.matchMedia(q).matches; };
+  var stored = null;
+  try { stored = window.localStorage.getItem('ontos-bg-paused'); } catch (e) {}
+  var conn = navigator.connection || {};
+  var small = mq('(max-width: 768px), (max-height: 540px) and (hover: none)') || conn.saveData === true;
+  var still = mq('(prefers-reduced-motion: reduce)') || stored === '1';
+  var desktop = v.querySelector('source');
+  if (desktop) desktop.addEventListener('error', function () { d.className += ' no-video'; });
+  v.addEventListener('error', function () { d.className += ' no-video'; });
+  if (small) {
+    var s = document.createElement('source');
+    s.src = 'media/bg-mobile.mp4';
+    s.type = 'video/mp4';
+    v.insertBefore(s, desktop);
+    v.setAttribute('poster', 'media/bg-poster-small.jpg');
+  }
+  if (still) {
+    v.removeAttribute('autoplay');
+    v.autoplay = false;
+    v.preload = 'none';
+    d.className += ' bg-still';
+  }
+  if (small || still) v.load();
+})();
+</script>
+
+<main class="stage" id="main">
+  <h1 class="logo">
+    <span class="sr-only">Ontos Labs</span>
+    <svg class="logo-svg" viewBox="0 3 196 45" width="196" height="45" aria-hidden="true" focusable="false">
+      <g transform="translate(0 4.71)" fill="none" stroke="currentColor" stroke-width="2.6">
+        <ellipse cx="28" cy="20" rx="26" ry="17.5"/>
+        <ellipse cx="28" cy="20" rx="16.5" ry="11"/>
+        <ellipse cx="28" cy="20" rx="7.5" ry="5" fill="currentColor" stroke="none"/>
+      </g>
+      <path fill="currentColor" d="M76.83 16.98Q76.83 15.33 77.19 13.79Q77.56 12.25 78.36 11.04Q79.17 9.84 80.47 9.12Q81.76 8.40 83.62 8.40Q85.47 8.40 86.77 9.12Q88.06 9.84 88.87 11.04Q89.67 12.25 90.04 13.79Q90.41 15.33 90.41 16.98Q90.41 18.55 90.04 20.04Q89.67 21.53 88.87 22.72Q88.06 23.91 86.77 24.62Q85.47 25.34 83.62 25.34Q81.76 25.34 80.47 24.62Q79.17 23.91 78.36 22.72Q77.56 21.53 77.19 20.04Q76.83 18.55 76.83 16.98ZM71.33 16.98Q71.33 19.71 72.17 22.07Q73.01 24.43 74.59 26.18Q76.16 27.93 78.45 28.93Q80.75 29.93 83.62 29.93Q86.52 29.93 88.80 28.93Q91.07 27.93 92.65 26.18Q94.22 24.43 95.06 22.07Q95.90 19.71 95.90 16.98Q95.90 14.18 95.06 11.78Q94.22 9.38 92.65 7.60Q91.07 5.81 88.80 4.80Q86.52 3.78 83.62 3.78Q80.75 3.78 78.45 4.80Q76.16 5.81 74.59 7.60Q73.01 9.38 72.17 11.78Q71.33 14.18 71.33 16.98ZM100 4.38L100 29.37L105.14 29.37L105.14 12.64L105.21 12.64L115.61 29.37L121.10 29.37L121.10 4.38L115.96 4.38L115.96 21.14L115.89 21.14L105.46 4.38ZM131.81 9L131.81 29.37L137.31 29.37L137.31 9L144.80 9L144.80 4.38L124.32 4.38L124.32 9ZM152.43 16.98Q152.43 15.33 152.79 13.79Q153.16 12.25 153.97 11.04Q154.77 9.84 156.06 9.12Q157.36 8.40 159.22 8.40Q161.07 8.40 162.37 9.12Q163.66 9.84 164.47 11.04Q165.27 12.25 165.64 13.79Q166 15.33 166 16.98Q166 18.55 165.64 20.04Q165.27 21.53 164.47 22.72Q163.66 23.91 162.37 24.62Q161.07 25.34 159.22 25.34Q157.36 25.34 156.06 24.62Q154.77 23.91 153.97 22.72Q153.16 21.53 152.79 20.04Q152.43 18.55 152.43 16.98ZM146.93 16.98Q146.93 19.71 147.77 22.07Q148.61 24.43 150.19 26.18Q151.76 27.93 154.05 28.93Q156.35 29.93 159.22 29.93Q162.12 29.93 164.40 28.93Q166.67 27.93 168.25 26.18Q169.82 24.43 170.66 22.07Q171.50 19.71 171.50 16.98Q171.50 14.18 170.66 11.78Q169.82 9.38 168.25 7.60Q166.67 5.81 164.40 4.80Q162.12 3.78 159.22 3.78Q156.35 3.78 154.05 4.80Q151.76 5.81 150.19 7.60Q148.61 9.38 147.77 11.78Q146.93 14.18 146.93 16.98ZM179.34 21.07L174.02 21.07Q173.99 23.38 174.86 25.06Q175.74 26.74 177.22 27.83Q178.71 28.91 180.65 29.42Q182.60 29.93 184.66 29.93Q187.22 29.93 189.16 29.33Q191.10 28.74 192.41 27.67Q193.73 26.60 194.39 25.13Q195.06 23.66 195.06 21.95Q195.06 19.85 194.16 18.50Q193.27 17.15 192.05 16.35Q190.82 15.54 189.58 15.17Q188.34 14.81 187.63 14.67Q185.29 14.07 183.84 13.69Q182.38 13.30 181.56 12.92Q180.74 12.53 180.46 12.08Q180.18 11.62 180.18 10.89Q180.18 10.08 180.53 9.56Q180.88 9.03 181.42 8.68Q181.97 8.33 182.63 8.19Q183.30 8.05 183.96 8.05Q184.98 8.05 185.83 8.23Q186.69 8.40 187.36 8.82Q188.02 9.24 188.42 9.98Q188.82 10.71 188.90 11.83L194.22 11.83Q194.22 9.66 193.39 8.14Q192.57 6.62 191.17 5.64Q189.77 4.66 187.97 4.22Q186.17 3.78 184.21 3.78Q182.53 3.78 180.85 4.24Q179.17 4.69 177.84 5.64Q176.50 6.58 175.68 8Q174.86 9.42 174.86 11.34Q174.86 13.06 175.51 14.26Q176.16 15.47 177.21 16.28Q178.25 17.08 179.59 17.59Q180.92 18.10 182.31 18.45Q183.68 18.83 185.01 19.15Q186.34 19.46 187.39 19.88Q188.44 20.30 189.09 20.93Q189.74 21.56 189.74 22.58Q189.74 23.52 189.25 24.13Q188.75 24.75 188.02 25.10Q187.29 25.45 186.44 25.57Q185.61 25.69 184.87 25.69Q183.79 25.69 182.77 25.43Q181.75 25.17 181 24.62Q180.25 24.08 179.80 23.21Q179.34 22.33 179.34 21.07Z"/>
+      <path fill="currentColor" d="M71.10 39.29L72.14 39.29L72.14 46.07L75.84 46.07L75.84 46.95L71.10 46.95ZM85.99 40.20L84.90 44.12L87.08 44.12ZM85.36 39.29L86.62 39.29L88.96 46.95L87.89 46.95L87.33 44.95L84.65 44.95L84.09 46.95L83.02 46.95ZM97.55 43.09L97.55 46.10L98.78 46.10Q99.68 46.10 100.07 45.78Q100.45 45.46 100.45 44.74Q100.45 43.79 100.05 43.44Q99.64 43.09 98.78 43.09ZM97.55 40.14L97.55 42.24L98.76 42.24Q99.51 42.24 99.84 41.96Q100.18 41.67 100.18 41.23Q100.18 40.66 99.85 40.40Q99.52 40.14 98.76 40.14ZM96.51 39.29L98.78 39.29Q99.95 39.29 100.59 39.80Q101.23 40.31 101.23 41.23Q101.23 41.73 100.89 42.14Q100.55 42.54 99.88 42.64Q100.64 42.76 101.06 43.29Q101.49 43.82 101.49 44.84Q101.49 45.89 100.81 46.42Q100.13 46.95 98.78 46.95L96.51 46.95ZM113.68 39.55L113.68 40.60Q113.21 40.30 112.74 40.15Q112.26 39.99 111.78 39.99Q111.05 39.99 110.62 40.34Q110.20 40.68 110.20 41.26Q110.20 41.76 110.48 42.03Q110.76 42.30 111.52 42.48L112.06 42.60Q113.14 42.85 113.63 43.39Q114.12 43.93 114.12 44.85Q114.12 45.95 113.45 46.52Q112.77 47.10 111.48 47.10Q110.94 47.10 110.40 46.98Q109.85 46.86 109.30 46.63L109.30 45.53Q109.89 45.91 110.42 46.08Q110.95 46.25 111.48 46.25Q112.26 46.25 112.70 45.90Q113.13 45.55 113.13 44.92Q113.13 44.35 112.83 44.04Q112.53 43.74 111.79 43.58L111.24 43.45Q110.17 43.21 109.69 42.72Q109.21 42.23 109.21 41.41Q109.21 40.39 109.90 39.77Q110.59 39.15 111.73 39.15Q112.17 39.15 112.66 39.25Q113.14 39.35 113.68 39.55Z"/>
+    </svg>
+  </h1>
+  <p class="motto">Agentic <em>being</em> in the world.</p>
+  <p class="contact"><a href="mailto:contact@ontoslabs.ai">contact@ontoslabs.ai</a></p>
+</main>
+
+<footer class="foot">
+  <p class="copy"><small>&copy; 2026 Ontos Labs</small></p>
+  <button class="bg-toggle" id="bg-toggle" type="button" hidden>
+    <svg class="i-pause" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><rect x="3.5" y="2.5" width="3" height="11" rx="0.75"/><rect x="9.5" y="2.5" width="3" height="11" rx="0.75"/></svg>
+    <svg class="i-play" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4.5 2.6v10.8c0 .6.65.95 1.15.62l8.1-5.4a.75.75 0 0 0 0-1.24l-8.1-5.4c-.5-.33-1.15.02-1.15.62z"/></svg>
+    <span class="sr-only" id="bg-toggle-label">Pause background video</span>
+  </button>
+</footer>
+<script src="script.js" defer></script>
+</body>
+</html>
