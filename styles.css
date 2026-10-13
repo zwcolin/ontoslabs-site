@@ -185,9 +185,14 @@ body {
 /* Windows High Contrast / forced colours: keep everything visible */
 @media (forced-colors: active) {
   .logo, .motto, .motto em { color: CanvasText; }
+  .logo-svg { filter: none; }
 }
 
 @media print {
   body { color: #262625; background: #fff; }
   .logo, .motto, .motto em, .contact a { color: #262625; text-shadow: none; }
 }
+
+/* New wordmark (raster, white on black): keep its proportions. */
+.logo-svg { height: auto; display: block; margin-inline: auto; }
+@media print { .logo-svg { filter: invert(1); } }
