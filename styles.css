@@ -1,7 +1,7 @@
 /* Ontos Labs: one-page stealth site. Brand palette. */
 :root {
   color-scheme: dark;
-  --night: #0b0d12;         /* page base: near-black, slightly blue */
+  --night: #000;            /* page base: black */
   --text: #f4f3ef;          /* brand paper, used as ink on dark */
   --text-soft: rgba(244, 243, 239, 0.78);
   --accent: #5371c4;        /* brand accent */
@@ -11,7 +11,7 @@
   --sans: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --pad-x: clamp(1.25rem, 5vw, 3rem);
   --pad-y: clamp(1rem, 3.5vh, 2rem);
-  /* Same insets as the body padding, reused to centre the orbit on the text block. */
+  /* Same insets as the body padding, reused by the layout. */
   --pt: max(var(--pad-y), env(safe-area-inset-top));
   --pb: max(var(--pad-y), env(safe-area-inset-bottom));
   --pl: max(var(--pad-x), env(safe-area-inset-left));
@@ -19,8 +19,6 @@
   --foot-h: 2.75rem;
   --stage-h: calc(100vh - var(--pt) - var(--pb) - var(--foot-h));
   --motto-size: clamp(2rem, min(1.2rem + 3.6vw, 7.5vh + 0.5rem), 5rem);
-  --ring: rgba(174, 191, 240, 0.45);
-  --ring-outer: rgba(174, 191, 240, 0.30);
 }
 @supports (height: 100dvh) {
   :root { --stage-h: calc(100dvh - var(--pt) - var(--pb) - var(--foot-h)); }
@@ -66,48 +64,6 @@ body {
   white-space: nowrap;
 }
 
-/* ---------- Background: the Ontos orbit ----------
-   Two thin rings of the logo mark, scaled up and centred on the text block.
-   The middle ring always encloses the text; the outer ring is cropped by the
-   viewport. Nothing is drawn behind the words. */
-.bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background:
-    radial-gradient(120% 90% at 50% 46%, rgba(6, 7, 10, 0) 55%, rgba(6, 7, 10, 0.55) 100%),
-    var(--night);
-}
-
-.orbit {
-  /* --r is the middle ring's horizontal radius. Portrait: the outer ring's
-     bottom stays clear of the footer (1.5rem gap; on short phones the gap
-     shrinks towards 0.25rem so the middle ring keeps clear of the logo). */
-  --r: calc(0.943 * (var(--stage-h) / 2 - clamp(0.25rem, 0.25rem + (var(--stage-h) - 30rem) * 0.15, 1.5rem)));
-  position: absolute;
-  left: calc(var(--pl) + (100% - var(--pl) - var(--pr)) / 2);
-  top: calc(var(--pt) + (100% - var(--pt) - var(--pb) - var(--foot-h)) / 2);
-  width: calc(var(--r) * 52 / 16.5);
-  height: calc(var(--r) * 35 / 16.5);
-  transform: translate(-50%, -50%);
-  overflow: visible;
-}
-/* Landscape: the middle ring fills ~7/8 of the stage height (wider if the motto
-   needs it); the outer ring runs off the top and bottom and cuts the corners. */
-@media (min-aspect-ratio: 11/10) {
-  .orbit { --r: max(7 * var(--motto-size), 0.656 * var(--stage-h)); }
-}
-
-.ring {
-  fill: none;
-  stroke: var(--ring);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-.ring-outer { stroke: var(--ring-outer); }
-
 /* ---------- Content ---------- */
 .stage, .foot { position: relative; z-index: 1; }
 
@@ -121,9 +77,7 @@ body {
   padding-block: clamp(1.5rem, 6vh, 4rem);
 }
 
-/* Text block. Its halo is a soft plate of the page colour (plus a faint blue
-   glow, the mark's inner ellipse) drawn above the rings, so even on unusual
-   screen shapes no line can show through the words. */
+/* Text block. */
 .core {
   position: relative;
   isolation: isolate;
@@ -132,16 +86,6 @@ body {
   align-items: center;
   min-width: 0;
   max-width: 100%;
-}
-.core::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: calc(-1 * clamp(2rem, 7vh, 5rem)) calc(-1 * clamp(2.5rem, 8vw, 7rem));
-  background:
-    radial-gradient(closest-side, rgba(83, 113, 196, 0.11), rgba(83, 113, 196, 0.045) 55%, rgba(83, 113, 196, 0) 100%),
-    radial-gradient(closest-side, var(--night) 72%, rgba(11, 13, 18, 0) 100%);
-  pointer-events: none;
 }
 
 .logo {
@@ -240,12 +184,10 @@ body {
 
 /* Windows High Contrast / forced colours: keep everything visible */
 @media (forced-colors: active) {
-  .bg, .core::before { display: none; }
   .logo, .motto, .motto em { color: CanvasText; }
 }
 
 @media print {
-  .bg, .core::before { display: none !important; }
   body { color: #262625; background: #fff; }
   .logo, .motto, .motto em, .contact a { color: #262625; text-shadow: none; }
 }
